@@ -7,7 +7,7 @@ end
 
 module KeywordSearch
   
-  VERSION = '1.0.0'
+  VERSION = '1.0.1'
   
   class << self
     def search(input_string, definition=nil, &block)

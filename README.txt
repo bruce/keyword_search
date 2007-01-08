@@ -23,8 +23,7 @@ Development Roadmap:
 
 == SYNOPSIS:
 
-Here's an example of usage from Rails.  
-* Note that the library is generic, and could presumably be used for any Ruby project.
+Here's an example of usage from Rails (though the library is generic, and could presumably be used for any Ruby project)
 
   # Some variables to build up
   clauses = []
@@ -32,6 +31,7 @@ Here's an example of usage from Rails.
 
   # Search a string, defining the supported keywords and building up
   # the variables in the associated closures
+  
   KeywordSearch.search('account has:attachment since:2006-12-03') do |with|
 
     with.default_keyword :title

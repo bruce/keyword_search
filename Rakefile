@@ -5,7 +5,7 @@ require 'hoe'
 require './lib/keyword_search.rb'
 
 Hoe.new('keyword_search', KeywordSearch::VERSION) do |p|
-  p.rubyforge_name = 'keyword_search'
+  p.rubyforge_name = 'codefluency'
   p.summary = 'Generic support for extracting GMail-style search keywords/values from strings'
   p.description = p.paragraphs_of('README.txt', 2..5).join("\n\n")
   p.url = p.paragraphs_of('README.txt', 0).first.split(/\n/)[1..-1]
