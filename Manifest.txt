@@ -2,7 +2,6 @@ History.txt
 Manifest.txt
 README.txt
 Rakefile
-bin/keyword_search
 lib/keyword_search.rb
 lib/keyword_search/definition.rb
 lib/keyword_search/evaluator.rb
