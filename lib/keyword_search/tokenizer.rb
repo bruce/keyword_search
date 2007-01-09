@@ -2,9 +2,11 @@ module KeywordSearch
   
   class Tokenizer < Dhaka::Tokenizer
 
+
+    # TODO: Add further character support; this is just for initial release
     letters = ('a'..'z').to_a
     numbers = ('0'..'9').to_a
-    extras = %w|_ - '|
+    extras = %w|_ - ' / \ [ ] { } 1 @ # $ % ^ & * ( )|
     printables = letters + numbers + extras
     whitespace = [' ']
     quotes = ['"']
