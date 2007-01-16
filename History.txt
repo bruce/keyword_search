@@ -1,3 +1,8 @@
+= 1.0.4 / 2007-01-15
+
+* Updated Dhaka dependency to lock to version 0.0.6 due to breakage of backwards compatibility in 1.0.0.
+  Will update to allow 1.0.0+ once changes to Dhaka API stabilize (thanks to Dhaka author Mushfeq Khan for the tip)
+
 == 1.0.0 / 2007-01-08
 
 * Initial release
