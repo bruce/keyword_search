@@ -1,3 +1,8 @@
+= 1.0.5 / 2007-01-29
+
+* Added single quoting support and nested quotes (apostrophes, etc)
+* Added a few more punctuation marks as valid input
+
 = 1.0.4 / 2007-01-15
 
 * Updated Dhaka dependency to lock to version 0.0.6 due to breakage of backwards compatibility in 1.0.0.
