@@ -12,7 +12,7 @@ Hoe.new('keyword_search', KeywordSearch::VERSION) do |p|
   p.author = 'Bruce Williams'
   p.email = 'bruce@codefluency.com'
   p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
-  p.extra_deps = [['dhaka', '= 0.0.6']]
+  p.extra_deps = [['dhaka', '= 2.1.0']]
 end
 
 task :rebuild_parser do

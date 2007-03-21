@@ -7,23 +7,25 @@ module KeywordSearch
     define_evaluation_rules do
 
       for_multiple_pairs do
-        child_nodes[1].each do |key, terms|
-          child_nodes[0][key] ||= []
-          child_nodes[0][key] += terms
+        child_nodes.inject({}) do |result,child_node|
+          evaluate(child_node).each do |key,value|
+            result[key] ||= []
+            result[key] += value
+          end
+          result
         end
-        child_nodes[0]
       end
 
       for_one_pair do
-        child_nodes[0]
+        evaluate(child_nodes.first)
       end
 
       for_keyword_and_term do
-        {child_nodes[0].token.value => [child_nodes[1].token.value]}
+        {child_nodes.first.tokens.first.value => [child_nodes.last.tokens.first.value]}
       end
 
       for_default_keyword_term do
-        {:default => [child_nodes[0].token.value]}
+        {:default => [child_nodes[0].tokens[0].value]}
       end
 
     end

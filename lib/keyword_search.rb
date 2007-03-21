@@ -7,20 +7,21 @@ end
 
 module KeywordSearch
   
-  VERSION = '1.0.6'
+  VERSION = '1.1.0'
   
   class << self
     def search(input_string, definition=nil, &block)
+      @evaluator ||= Evaluator.new
       definition ||= Definition.new(&block)
       tokens = Tokenizer.tokenize(input_string.downcase)
       parse_result = Parser.parse(tokens)
       unless parse_result.has_error?
-        results = Evaluator.new(parse_result.syntax_tree).result
+        results = @evaluator.evaluate(parse_result.parse_tree)
         results.each do |key, terms|
           definition.handle(key, terms)
         end
         results
-      end
+      else
         {}
       end
     end
