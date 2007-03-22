@@ -16,7 +16,7 @@ module KeywordSearch
 
 
     # TODO: Add further character support; this is just for initial release
-    letters = ('a'..'z').to_a
+    letters = ('a'..'z').to_a + ('A'..'Z').to_a
     numbers = ('0'..'9').to_a
     extras = %w|_ - ' / \ [ ] { } 1 @ # $ % ^ & * ( ) . , ? < > |
     printables = letters + numbers + extras
@@ -81,7 +81,7 @@ module KeywordSearch
       end
       for_characters %w<"> do
         create_token 's', accumulator
-        clear_accumulator = ''
+        clear_accumulator
         advance
         switch_to :idle_state
       end
