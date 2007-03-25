@@ -12,7 +12,7 @@ module KeywordSearch
     end
   
     for_symbol 'Pair' do
-      keyword_and_term ['k', 's']
+      keyword_and_term ['s', ':', 's']
       default_keyword_term ['s']
     end
     

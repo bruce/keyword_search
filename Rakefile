@@ -23,4 +23,20 @@ task :rebuild_parser do
   end
 end
 
+task :rebuild_lexer do
+  require 'dhaka'
+  lexer = Dhaka::Lexer.new(KeywordSearch::LexerSpec)
+  File.open('lib/keyword_search/lexer.rb', 'w') do |file|
+    file << lexer.compile_to_ruby_source_as('KeywordSearch::Lexer')
+  end
+end
+
+task :rebuild_lexer do
+  require 'dhaka'
+  lexer = Dhaka::Lexer.new(KeywordSearch::LexerSpec)
+  File.open('lib/keyword_search/lexer.rb', 'w') do |file|
+    file << lexer.compile_to_ruby_source_as('KeywordSearch::Lexer')
+  end
+end
+
 # vim: syntax=Ruby
