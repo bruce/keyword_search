@@ -15,7 +15,7 @@ Hoe.new('keyword_search', KeywordSearch::VERSION) do |p|
   p.extra_deps = [['dhaka', '= 2.1.0']]
 end
 
-task :rebuild_parser do
+task :rebuild do
   require 'dhaka'
   parser = Dhaka::Parser.new(KeywordSearch::Grammar)
   File.open('lib/keyword_search/parser.rb', 'w') do |file|
@@ -23,20 +23,5 @@ task :rebuild_parser do
   end
 end
 
-task :rebuild_lexer do
-  require 'dhaka'
-  lexer = Dhaka::Lexer.new(KeywordSearch::LexerSpec)
-  File.open('lib/keyword_search/lexer.rb', 'w') do |file|
-    file << lexer.compile_to_ruby_source_as('KeywordSearch::Lexer')
-  end
-end
-
-task :rebuild_lexer do
-  require 'dhaka'
-  lexer = Dhaka::Lexer.new(KeywordSearch::LexerSpec)
-  File.open('lib/keyword_search/lexer.rb', 'w') do |file|
-    file << lexer.compile_to_ruby_source_as('KeywordSearch::Lexer')
-  end
-end
 
 # vim: syntax=Ruby
