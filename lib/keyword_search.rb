@@ -7,7 +7,9 @@ end
 
 module KeywordSearch
   
-  VERSION = '1.1.1'
+  class ParseError < ::SyntaxError; end
+  
+  VERSION = '1.1.2'
   
   class << self
     def search(input_string, definition=nil, &block)
@@ -21,7 +23,7 @@ module KeywordSearch
         end
         results
       else
-        {}
+        raise ParseError, "Unexpected token #{parse_result.unexpected_token.inspect}"
       end
     end
   end

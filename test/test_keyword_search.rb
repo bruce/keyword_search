@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'lib/keyword_search'
+require File.dirname(__FILE__) + '/../lib/keyword_search'
   
 class TestKeywordSearch < Test::Unit::TestCase
   
@@ -127,6 +127,17 @@ class TestKeywordSearch < Test::Unit::TestCase
       end
     end
     assert_equal %<okay...>, result    
+  end
+  
+  def test_parse_error_results_in_exception
+    assert_raises(KeywordSearch::ParseError) do
+      KeywordSearch.search(%<we_do_not_allow:! or ::>) do |with|
+        with.default_keyword :text
+        with.keyword :text do |values|
+          result = values.first
+        end
+      end
+    end
   end
   
 end
