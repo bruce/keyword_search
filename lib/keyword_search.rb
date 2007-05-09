@@ -9,7 +9,7 @@ module KeywordSearch
   
   class ParseError < ::SyntaxError; end
   
-  VERSION = '1.1.2'
+  VERSION = '1.2.0'
   
   class << self
     def search(input_string, definition=nil, &block)
