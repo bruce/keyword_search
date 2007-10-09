@@ -2,9 +2,8 @@
 
 require 'rubygems'
 require 'hoe'
-require './lib/keyword_search.rb'
 
-Hoe.new('keyword_search', KeywordSearch::VERSION) do |p|
+Hoe.new('keyword_search', '1.3.0') do |p|
   p.rubyforge_name = 'codefluency'
   p.summary = 'Generic support for extracting GMail-style search keywords/values from strings'
   p.description = p.paragraphs_of('README.txt', 2..5).join("\n\n")
@@ -12,16 +11,10 @@ Hoe.new('keyword_search', KeywordSearch::VERSION) do |p|
   p.author = 'Bruce Williams'
   p.email = 'bruce@codefluency.com'
   p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
-  p.extra_deps = [['dhaka', '= 2.1.0']]
 end
 
-task :rebuild do
-  require 'dhaka'
-  parser = Dhaka::Parser.new(KeywordSearch::Grammar)
-  File.open('lib/keyword_search/parser.rb', 'w') do |file|
-    file << parser.compile_to_ruby_source_as('KeywordSearch::Parser')
-  end
+rule '.rb' => '.rl' do |t|
+  sh "ragel -R #{t.source} | rlgen-ruby -o #{t.name}"
 end
 
-
-# vim: syntax=Ruby
+task :ragel => 'lib/keyword_search.rb'

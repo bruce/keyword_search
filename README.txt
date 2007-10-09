@@ -17,8 +17,6 @@ Various notes:
 * Input is automatically downcased (both keywords and values should be assumed to be in lowercase)
 
 Development Roadmap:
-1.1:: Expand supported character set for keywords and values
-      (currently supports a-z)
 2.0:: Add negation and grouping (will break API backwards compatibility)
 
 == SYNOPSIS:
@@ -59,7 +57,6 @@ Here's an example of usage from Rails (though the library is generic, and could 
 
 == REQUIREMENTS:
 
-* dhaka
 * hoe
 
 == INSTALL:

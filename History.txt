@@ -1,3 +1,11 @@
+= 1.3.0 / 2007-10-09
+
+* Conversion to Ragel-based parser (faster, less resource-intensive)
+* Better support for other character sets, allow apostrophes in
+  unquoted words
+* Test suite now uses test/spec
+* API Should be backwards compatible
+
 = 1.2.0 / 2007-05-09
 
 * Raises KeywordSearch::ParseError instead of returning an empty Hash if an error occurs during parsing

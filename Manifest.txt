@@ -3,9 +3,6 @@ Manifest.txt
 README.txt
 Rakefile
 lib/keyword_search.rb
+lib/keyword_search.rl
 lib/keyword_search/definition.rb
-lib/keyword_search/evaluator.rb
-lib/keyword_search/grammar.rb
-lib/keyword_search/parser.rb
-lib/keyword_search/tokenizer.rb
 test/test_keyword_search.rb
