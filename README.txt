@@ -6,18 +6,16 @@ keyword_search
   
 Generic library to parse GMail-style search strings for keyword/value pairs; supports definition of valid keywords and handling of quoted values.
 
-== FEATURES/PROBLEMS:
+== FEATURES:
   
 The library features a very simple, easy-to-use API.
 * Define handlers for supported keywords with blocks
 * Define the default keyword (values not part of a keyword/value pair)
 
-Various notes:
-* Quoted values are supported.
-* Input is automatically downcased (both keywords and values should be assumed to be in lowercase)
-
 Development Roadmap:
 2.0:: Add negation and grouping (will break API backwards compatibility)
+
+Note:: As of 1.3.0, input to KeywordSearch.search is no longer automatically downcased, allowing for case sensitive keyword and value pairs.  If you want case insensitivity, downcase the input before you invoke the method.
 
 == SYNOPSIS:
 

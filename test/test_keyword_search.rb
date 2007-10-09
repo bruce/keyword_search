@@ -176,6 +176,30 @@ context "KeywordSearch" do
       end
     end
   end
+  
+  specify "keywords are case sensitive" do
+    result = nil
+    KeywordSearch.search(%<Text:justtesting>) do |with|
+      with.keyword :text do |values|
+        result = :small
+      end
+      with.keyword :Text do |values|
+        result = :big
+      end      
+    end
+    assert_equal :big, result
+  end
+  
+  specify "values are case sensitive" do
+    result = nil
+    KeywordSearch.search(%<text:Big>) do |with|
+      with.keyword :text do |values|
+        result = values.first
+      end
+    end
+    assert_equal 'Big', result
+  end
+  
 end
 
 

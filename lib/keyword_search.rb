@@ -7,7 +7,8 @@ module KeywordSearch
       
   class << self
   
-    # line 44 "lib/keyword_search.rl"
+    # line 48 "lib/keyword_search.rl"
+
     
     def search(input_string, definition=nil, &block)
       definition ||= Definition.new(&block)
@@ -31,8 +32,9 @@ class << self
 	private :_parser_actions, :_parser_actions=
 end
 self._parser_actions = [
-	0, 1, 3, 1, 4, 2, 0, 2, 
-	2, 1, 0
+	0, 1, 3, 1, 5, 1, 6, 2, 
+	0, 2, 2, 1, 0, 3, 0, 2, 
+	4, 3, 1, 0, 4
 ]
 
 class << self
@@ -97,9 +99,9 @@ class << self
 	private :_parser_trans_actions_wi, :_parser_trans_actions_wi=
 end
 self._parser_trans_actions_wi = [
-	5, 3, 5, 5, 3, 5, 1, 0, 
-	0, 0, 0, 8, 8, 0, 8, 1, 
-	0, 0, 0, 0, 0, 1, 0, 0, 
+	7, 5, 13, 13, 5, 7, 1, 0, 
+	0, 0, 0, 17, 17, 0, 10, 1, 
+	0, 0, 0, 3, 0, 1, 0, 3, 
 	0, 1, 0, 0, 0, 0
 ]
 
@@ -121,22 +123,23 @@ class << self
 end
 self.parser_en_main = 1;
 
-# line 62 "lib/keyword_search.rl"
+# line 66 "lib/keyword_search.rl"
     	p = 0
     	pe = data.length
     	key = nil
     	tokstart = nil
     	results = {}
+    	quotes = 0
       
-# line 133 "lib/keyword_search.rb"
+# line 135 "lib/keyword_search.rb"
 begin
 	p ||= 0
 	pe ||= data.length
 	cs = parser_start
 end
-# line 68 "lib/keyword_search.rl"
+# line 73 "lib/keyword_search.rl"
       
-# line 141 "lib/keyword_search.rb"
+# line 143 "lib/keyword_search.rb"
 begin
 	_klen, _trans, _keys, _acts, _nacts = nil
 	if p != pe
@@ -235,11 +238,21 @@ when 3:
       		end
 # line 26 "lib/keyword_search.rl"
 when 4:
-# line 42 "lib/keyword_search.rl"
+# line 32 "lib/keyword_search.rl"
+		begin
+ quotes += 1 		end
+# line 32 "lib/keyword_search.rl"
+when 5:
+# line 34 "lib/keyword_search.rl"
+		begin
+ quotes -= 1 		end
+# line 34 "lib/keyword_search.rl"
+when 6:
+# line 46 "lib/keyword_search.rl"
 		begin
  raise ParseError, "At offset #{p}, near: '#{data[p,10]}'" 		end
-# line 42 "lib/keyword_search.rl"
-# line 244 "lib/keyword_search.rb"
+# line 46 "lib/keyword_search.rl"
+# line 256 "lib/keyword_search.rb"
 		end # action switch
 	end
 	end while false
@@ -251,10 +264,13 @@ when 4:
 	end
 	end
 	end
-# line 69 "lib/keyword_search.rl"
+# line 74 "lib/keyword_search.rl"
     	
-# line 258 "lib/keyword_search.rb"
-# line 70 "lib/keyword_search.rl"
+# line 270 "lib/keyword_search.rb"
+# line 75 "lib/keyword_search.rl"
+    	unless quotes.zero?
+    	  raise ParseError, "Unclosed quotes"
+    	end
     	results
     end
     

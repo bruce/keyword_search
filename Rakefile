@@ -3,7 +3,7 @@
 require 'rubygems'
 require 'hoe'
 
-Hoe.new('keyword_search', '1.3.0') do |p|
+Hoe.new('keyword_search', '1.3.1') do |p|
   p.rubyforge_name = 'codefluency'
   p.summary = 'Generic support for extracting GMail-style search keywords/values from strings'
   p.description = p.paragraphs_of('README.txt', 2..5).join("\n\n")
