@@ -1,0 +1,8 @@
+History.txt
+lib/keyword_search/definition.rb
+lib/keyword_search.rb
+lib/keyword_search.rl
+Manifest
+Rakefile
+README.rdoc
+test/test_keyword_search.rb

@@ -1,16 +1,16 @@
 # -*- ruby -*-
 
 require 'rubygems'
-require 'hoe'
+require 'echoe'
 
-Hoe.new('keyword_search', '1.3.1') do |p|
-  p.rubyforge_name = 'codefluency'
-  p.summary = 'Generic support for extracting GMail-style search keywords/values from strings'
-  p.description = p.paragraphs_of('README.txt', 2..5).join("\n\n")
-  p.url = p.paragraphs_of('README.txt', 0).first.split(/\n/)[1..-1]
-  p.author = 'Bruce Williams'
-  p.email = 'bruce@codefluency.com'
-  p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
+Echoe.new 'keyword_search' do |p|
+  p.version = '1.3.1'
+  p.author = "Bruce Williams"
+  p.email  = 'bruce@codefluency.com'
+  p.project = 'codefluency'
+  p.summary = "Generic library to parse GMail-style search strings for keyword/value pairs; supports definition of valid keywords and handling of quoted values."
+  p.url = "http://github.com/bruce/keyword_search"
+  p.include_rakefile = true
 end
 
 rule '.rb' => '.rl' do |t|
