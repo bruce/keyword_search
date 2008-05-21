@@ -37,10 +37,11 @@ module KeywordSearch
       
       action unquote { quotes -= 1 }
       
-      bareword = [^ '":] [^ ":]*; # allow apostrophes
+      bareword = [^ '"(:] [^ "):]*; # allow apostrophes
+      grouped = '(' @ quote any* :>> ')' @ unquote;
       dquoted = '"' @ quote any* :>> '"' @ unquote;
       squoted = '\'' @ quote any* :>> '\'' @ unquote;
-      grouped = '(' @ quote any* :>> ')' @ unquote;
+      
       
       value = ( grouped | dquoted | squoted | bareword );
       

@@ -15,7 +15,8 @@ context "KeywordSearch" do
   NAME_WITH_NESTED_SINGLE_QUOTES = %<"d'arcy d'uberville" age:28>
   NAME_AND_GROUPED_AGE = %<coda hale age:(27)>
   NAME_AND_GROUPED_QUOTED_AGE = %<coda hale age:("27")>
-  NAME_AND_GROUPED_QUOTED_AGES = %<coda hale age:("27" 34 "48")>
+  NAME_AND_GROUPED_QUOTED_AGES = %<coda hale age:("27" 34 '48')>
+  GROUPED_NAMES_AND_AGE = %<(coda bruce 'hale' "williams") age:20>
   
   specify "default keyword" do
     result = nil
@@ -26,6 +27,17 @@ context "KeywordSearch" do
       end
     end
     assert_equal 'bruce williams', result
+  end
+  
+  specify "grouped default keywords" do
+    result = nil
+    KeywordSearch.search(GROUPED_NAMES_AND_AGE) do |with|
+      with.default_keyword :name
+      with.keyword :name do |values|
+        result = values.first
+      end
+    end
+    assert_equal ['coda', 'bruce', 'hale', 'williams'], result
   end
   
   specify "unquoted keyword term" do
