@@ -55,7 +55,7 @@ Here's an example of usage from Rails (though the library is generic, and could 
 
 == REQUIREMENTS:
 
-* hoe
+None (echoe if you're running keyword_search tests or building the gem)
 
 == INSTALL:
 
