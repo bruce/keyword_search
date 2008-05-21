@@ -7,7 +7,7 @@ module KeywordSearch
       
   class << self
   
-    # line 48 "lib/keyword_search.rl"
+    # line 54 "lib/keyword_search.rl"
 
     
     def search(input_string, definition=nil, &block)
@@ -42,8 +42,8 @@ class << self
 	private :_parser_key_offsets, :_parser_key_offsets=
 end
 self._parser_key_offsets = [
-	0, 0, 5, 8, 12, 15, 16, 17, 
-	18
+	0, 0, 6, 10, 15, 19, 20, 21, 
+	22, 23
 ]
 
 class << self
@@ -51,9 +51,10 @@ class << self
 	private :_parser_trans_keys, :_parser_trans_keys=
 end
 self._parser_trans_keys = [
-	0, 32, 34, 39, 58, 32, 34, 58, 
-	32, 34, 39, 58, 32, 34, 58, 34, 
-	32, 39, 32, 34, 58, 0
+	0, 32, 34, 39, 40, 58, 32, 34, 
+	41, 58, 32, 34, 39, 40, 58, 32, 
+	34, 41, 58, 34, 32, 39, 41, 32, 
+	34, 41, 58, 0
 ]
 
 class << self
@@ -61,8 +62,8 @@ class << self
 	private :_parser_single_lengths, :_parser_single_lengths=
 end
 self._parser_single_lengths = [
-	0, 5, 3, 4, 3, 1, 1, 1, 
-	3
+	0, 6, 4, 5, 4, 1, 1, 1, 
+	1, 4
 ]
 
 class << self
@@ -71,7 +72,7 @@ class << self
 end
 self._parser_range_lengths = [
 	0, 0, 0, 0, 0, 0, 0, 0, 
-	0
+	0, 0
 ]
 
 class << self
@@ -79,8 +80,8 @@ class << self
 	private :_parser_index_offsets, :_parser_index_offsets=
 end
 self._parser_index_offsets = [
-	0, 0, 6, 10, 15, 19, 21, 23, 
-	25
+	0, 0, 7, 12, 18, 23, 25, 27, 
+	29, 31
 ]
 
 class << self
@@ -88,10 +89,11 @@ class << self
 	private :_parser_trans_targs_wi, :_parser_trans_targs_wi=
 end
 self._parser_trans_targs_wi = [
-	8, 0, 5, 7, 0, 2, 1, 0, 
-	3, 2, 0, 5, 7, 0, 4, 1, 
-	0, 0, 4, 6, 5, 1, 0, 6, 
-	7, 1, 0, 3, 2, 0
+	9, 0, 5, 7, 8, 0, 2, 1, 
+	0, 0, 3, 2, 0, 5, 7, 8, 
+	0, 4, 1, 0, 0, 0, 4, 6, 
+	5, 1, 0, 6, 7, 6, 8, 1, 
+	0, 0, 3, 2, 0
 ]
 
 class << self
@@ -99,10 +101,11 @@ class << self
 	private :_parser_trans_actions_wi, :_parser_trans_actions_wi=
 end
 self._parser_trans_actions_wi = [
-	7, 5, 13, 13, 5, 7, 1, 0, 
-	0, 0, 0, 17, 17, 0, 10, 1, 
-	0, 0, 0, 3, 0, 1, 0, 3, 
-	0, 1, 0, 0, 0, 0
+	7, 5, 13, 13, 13, 5, 7, 1, 
+	0, 0, 0, 0, 0, 17, 17, 17, 
+	0, 10, 1, 0, 0, 0, 0, 3, 
+	0, 1, 0, 3, 0, 3, 0, 1, 
+	0, 0, 0, 0, 0
 ]
 
 class << self
@@ -112,7 +115,7 @@ self.parser_start = 1;
 class << self
 	attr_accessor :parser_first_final
 end
-self.parser_first_final = 8;
+self.parser_first_final = 9;
 class << self
 	attr_accessor :parser_error
 end
@@ -123,7 +126,7 @@ class << self
 end
 self.parser_en_main = 1;
 
-# line 66 "lib/keyword_search.rl"
+# line 72 "lib/keyword_search.rl"
     	p = 0
     	pe = data.length
     	key = nil
@@ -131,15 +134,13 @@ self.parser_en_main = 1;
     	results = {}
     	quotes = 0
       
-# line 135 "lib/keyword_search.rb"
+# line 138 "lib/keyword_search.rb"
 begin
-	p ||= 0
-	pe ||= data.length
 	cs = parser_start
 end
-# line 73 "lib/keyword_search.rl"
+# line 79 "lib/keyword_search.rl"
       
-# line 143 "lib/keyword_search.rb"
+# line 144 "lib/keyword_search.rb"
 begin
 	_klen, _trans, _keys, _acts, _nacts = nil
 	if p != pe
@@ -233,26 +234,30 @@ when 3:
 		begin
 
         value = data[tokstart..p-1]
-        value = value[1..-2] if ["'", '"'].include?(value[0,1])
+        if ["("].include?(value[0,1])
+          value = parse(value[1..-2])[:default]
+        elsif ["'", '"'].include?(value[0,1])
+          value = value[1..-2]
+        end
         (results[key || :default] ||= []) << value
       		end
 # line 26 "lib/keyword_search.rl"
 when 4:
-# line 32 "lib/keyword_search.rl"
+# line 36 "lib/keyword_search.rl"
 		begin
  quotes += 1 		end
-# line 32 "lib/keyword_search.rl"
+# line 36 "lib/keyword_search.rl"
 when 5:
-# line 34 "lib/keyword_search.rl"
+# line 38 "lib/keyword_search.rl"
 		begin
  quotes -= 1 		end
-# line 34 "lib/keyword_search.rl"
+# line 38 "lib/keyword_search.rl"
 when 6:
-# line 46 "lib/keyword_search.rl"
+# line 52 "lib/keyword_search.rl"
 		begin
  raise ParseError, "At offset #{p}, near: '#{data[p,10]}'" 		end
-# line 46 "lib/keyword_search.rl"
-# line 256 "lib/keyword_search.rb"
+# line 52 "lib/keyword_search.rl"
+# line 261 "lib/keyword_search.rb"
 		end # action switch
 	end
 	end while false
@@ -264,10 +269,10 @@ when 6:
 	end
 	end
 	end
-# line 74 "lib/keyword_search.rl"
+# line 80 "lib/keyword_search.rl"
     	
-# line 270 "lib/keyword_search.rb"
-# line 75 "lib/keyword_search.rl"
+# line 275 "lib/keyword_search.rb"
+# line 81 "lib/keyword_search.rl"
     	unless quotes.zero?
     	  raise ParseError, "Unclosed quotes"
     	end

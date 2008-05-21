@@ -25,7 +25,11 @@ module KeywordSearch
       
       action value {
         value = data[tokstart..p-1]
-        value = value[1..-2] if ["'", '"'].include?(value[0,1])
+        if ["("].include?(value[0,1])
+          value = parse(value[1..-2])[:default]
+        elsif ["'", '"'].include?(value[0,1])
+          value = value[1..-2]
+        end
         (results[key || :default] ||= []) << value
       }
       
@@ -33,11 +37,13 @@ module KeywordSearch
       
       action unquote { quotes -= 1 }
       
-      bareword = [^ '":] [^ ":]*; # allow apostrophes
+      bareword = [^ '"(:] [^ "):]*; # allow apostrophes
+      grouped = '(' @ quote any* :>> ')' @ unquote;
       dquoted = '"' @ quote any* :>> '"' @ unquote;
       squoted = '\'' @ quote any* :>> '\'' @ unquote;
-
-      value = ( dquoted | squoted | bareword );
+      
+      
+      value = ( grouped | dquoted | squoted | bareword );
       
       pair = (bareword > start ':') % key value > start % value ;
       
