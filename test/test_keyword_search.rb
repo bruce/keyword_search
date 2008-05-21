@@ -13,6 +13,9 @@ context "KeywordSearch" do
   DEFAULT_AGE_WITH_QUOTED_AGE = %<26 name:"bruce williams">
   DEFAULT_AGE_WITH_SINGLE_QUOTED_AGE = %<26 name:'bruce williams'>
   NAME_WITH_NESTED_SINGLE_QUOTES = %<"d'arcy d'uberville" age:28>
+  NAME_AND_GROUPED_AGE = %<coda hale age:(27)>
+  NAME_AND_GROUPED_QUOTED_AGE = %<coda hale age:("27")>
+  NAME_AND_GROUPED_QUOTED_AGES = %<coda hale age:("27" 34 "48")>
   
   specify "default keyword" do
     result = nil
@@ -33,6 +36,36 @@ context "KeywordSearch" do
       end
     end
     assert_equal 26, result    
+  end
+  
+  specify "unquoted grouped keyword term" do
+    result = nil
+    KeywordSearch.search(NAME_AND_GROUPED_AGE) do |with|
+      with.keyword :age do |values|
+        result = Integer(values.first.first)
+      end
+    end
+    assert_equal 27, result    
+  end
+  
+  specify "quoted grouped keyword term" do
+    result = nil
+    KeywordSearch.search(NAME_AND_GROUPED_QUOTED_AGE) do |with|
+      with.keyword :age do |values|
+        result = Integer(values.first.first)
+      end
+    end
+    assert_equal 27, result    
+  end
+  
+  specify "mixed grouped keyword terms" do
+    result = nil
+    KeywordSearch.search(NAME_AND_GROUPED_QUOTED_AGES) do |with|
+      with.keyword :age do |values|
+        result = values.first.map { |v| v.to_i }
+      end
+    end
+    assert_equal [27, 34, 48], result
   end
   
   specify "quoted default keyword term" do
