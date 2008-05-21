@@ -1,6 +1,6 @@
 = HEAD
 
-* Added support for ()-based grouping: name:(frank "mr. buttons" jim) #=> ["frank", "mr. buttons", "jim"]
+* codahale: Added support for ()-based grouping: name:(frank "mr. buttons" jim) #=> ["frank", "mr. buttons", "jim"]
 
 = 1.3.1 / 2007-10-09
 
