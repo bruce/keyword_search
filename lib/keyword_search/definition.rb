@@ -10,8 +10,14 @@ module KeywordSearch
         @handler = handler
       end
       
-      def handle(value)
-        handler.call(value)
+      def handle(value, sign)
+        # If the handler is only expecting one argument, 
+        # only give them the positive matches
+        if handler.arity == 1
+          handler.call(value) if sign
+        else
+          handler.call(value, sign)
+        end
       end
       
     end
@@ -33,11 +39,18 @@ module KeywordSearch
       @default_keyword = name
     end
       
-    def handle(key, values, sign = nil)
+    def handle(key, values)
       key = @default_keyword if key == :default
       return false unless key
+      true_values, false_values = *values.partition { |v| v[1] }
+      
+      # Get just the values
+      true_values.collect! { |v| v[0] }
+      false_values.collect! { |v| v[0] }
+      
       if k = keywords.detect { |kw| kw.name == key.to_sym}
-        k.handle(values)
+        k.handle(true_values, true)
+        k.handle(false_values, false) if false_values.length > 0
       end
     end
     
