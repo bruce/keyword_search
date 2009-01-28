@@ -15,7 +15,7 @@ module KeywordSearch
       }
       
       action key {
-        key = data[tokstart...p-1]
+        key = word
         results[key] ||= []
       }
       
@@ -23,34 +23,43 @@ module KeywordSearch
         key = nil
       }
       
+      action word {
+        word = data[tokstart..p-1]
+      }
+      
       action value {
-        value = data[tokstart..p-1]
-        if ["("].include?(value[0,1])
-          value = parse(value[1..-2])[:default]
-        elsif ["'", '"'].include?(value[0,1])
-          value = value[1..-2]
-        end
-        (results[key || :default] ||= []) << value
+        (results[key || :default] ||= []) << word
       }
       
       action quote { quotes += 1 }
       
       action unquote { quotes -= 1 }
+
+      seperators = ' '+ | / *[,|] */ ;
+
+      bareword = ( [^ '"(:] . [^ "):]* ) > start % word ; # allow apostrophes
+      dquoted = '"' @ quote ( [^"]* > start % word ) :>> '"' @ unquote;
+      squoted = '\'' @ quote ( [^']* > start % word ) :>> '\'' @ unquote;
+
+      anyword = dquoted | squoted | bareword ;      
+
+      anyvalue = anyword % value ;
+      multivalues = anyvalue ( seperators anyvalue )* ;
+      groupedvalues = '(' @ quote multivalues :>> ')' @ unquote;
+
+      value = groupedvalues | anyvalue ;
+
+      pair = bareword % key ':' value ;
+
+      value_only = value > default ;
+
+      definition = ( pair | value_only );
       
-      bareword = [^ '"(:] [^ "):]*; # allow apostrophes
-      grouped = '(' @ quote any* :>> ')' @ unquote;
-      dquoted = '"' @ quote any* :>> '"' @ unquote;
-      squoted = '\'' @ quote any* :>> '\'' @ unquote;
-      
-      
-      value = ( grouped | dquoted | squoted | bareword );
-      
-      pair = (bareword > start ':') % key value > start % value ;
-      
-      definition = ( pair | value > start > default % value) ' ';        
-      main := definition** 0
+      definitions = definition ( ' '+ definition )*;
+
+      main := ' '* definitions? ' '* 0
               @!{ raise ParseError, "At offset #{p}, near: '#{data[p,10]}'" };        
-    	    
+
     }%%
     
     def search(input_string, definition=nil, &block)
@@ -71,6 +80,7 @@ module KeywordSearch
       %% write data;
     	p = 0
       eof = nil
+      word = nil
     	pe = data.length
     	key = nil
     	tokstart = nil

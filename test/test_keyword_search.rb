@@ -34,7 +34,7 @@ context "KeywordSearch" do
     KeywordSearch.search(GROUPED_NAMES_AND_AGE) do |with|
       with.default_keyword :name
       with.keyword :name do |values|
-        result = values.first
+        result = values
       end
     end
     assert_equal ['coda', 'bruce', 'hale', 'williams'], result
@@ -54,7 +54,7 @@ context "KeywordSearch" do
     result = nil
     KeywordSearch.search(NAME_AND_GROUPED_AGE) do |with|
       with.keyword :age do |values|
-        result = Integer(values.first.first)
+        result = Integer(values.first)
       end
     end
     assert_equal 27, result    
@@ -64,7 +64,7 @@ context "KeywordSearch" do
     result = nil
     KeywordSearch.search(NAME_AND_GROUPED_QUOTED_AGE) do |with|
       with.keyword :age do |values|
-        result = Integer(values.first.first)
+        result = Integer(values.first)
       end
     end
     assert_equal 27, result    
@@ -74,7 +74,7 @@ context "KeywordSearch" do
     result = nil
     KeywordSearch.search(NAME_AND_GROUPED_QUOTED_AGES) do |with|
       with.keyword :age do |values|
-        result = values.first.map { |v| v.to_i }
+        result = values.map { |v| v.to_i }
       end
     end
     assert_equal [27, 34, 48], result
@@ -245,6 +245,27 @@ context "KeywordSearch" do
     assert_equal 'Big', result
   end
   
+  specify "spaces are condensed" do
+    result = nil
+    KeywordSearch.search(%<   this   is    some    text   >) do |with|
+      with.default_keyword :text
+      with.keyword :text do |values|
+        result = values
+      end
+    end
+    assert_equal [], result.select { |v| v.match(/ /) }
+  end
+  
+  specify "an empty search is successful" do
+    result = nil
+    KeywordSearch.search(%<>) do |with|
+      with.default_keyword :text
+      with.keyword :text do |values|
+        result = values
+      end
+    end
+    assert_nil result
+  end
 end
 
 
