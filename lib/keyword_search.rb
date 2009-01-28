@@ -85,10 +85,10 @@ self._parser_index_offsets = [
 ]
 
 class << self
-	attr_accessor :_parser_trans_targs_wi
-	private :_parser_trans_targs_wi, :_parser_trans_targs_wi=
+	attr_accessor :_parser_trans_targs
+	private :_parser_trans_targs, :_parser_trans_targs=
 end
-self._parser_trans_targs_wi = [
+self._parser_trans_targs = [
 	9, 0, 5, 7, 8, 0, 2, 1, 
 	0, 0, 3, 2, 0, 5, 7, 8, 
 	0, 4, 1, 0, 0, 0, 4, 6, 
@@ -97,15 +97,24 @@ self._parser_trans_targs_wi = [
 ]
 
 class << self
-	attr_accessor :_parser_trans_actions_wi
-	private :_parser_trans_actions_wi, :_parser_trans_actions_wi=
+	attr_accessor :_parser_trans_actions
+	private :_parser_trans_actions, :_parser_trans_actions=
 end
-self._parser_trans_actions_wi = [
+self._parser_trans_actions = [
 	7, 5, 13, 13, 13, 5, 7, 1, 
 	0, 0, 0, 0, 0, 17, 17, 17, 
 	0, 10, 1, 0, 0, 0, 0, 3, 
 	0, 1, 0, 3, 0, 3, 0, 1, 
 	0, 0, 0, 0, 0
+]
+
+class << self
+	attr_accessor :_parser_eof_actions
+	private :_parser_eof_actions, :_parser_eof_actions=
+end
+self._parser_eof_actions = [
+	0, 5, 0, 0, 0, 0, 0, 0, 
+	0, 0
 ]
 
 class << self
@@ -128,27 +137,43 @@ self.parser_en_main = 1;
 
 # line 72 "lib/keyword_search.rl"
     	p = 0
+    	eof = nil
     	pe = data.length
     	key = nil
     	tokstart = nil
     	results = {}
     	quotes = 0
       
-# line 138 "lib/keyword_search.rb"
+# line 148 "lib/keyword_search.rb"
 begin
+	p ||= 0
+	pe ||= data.length
 	cs = parser_start
 end
-# line 79 "lib/keyword_search.rl"
+# line 80 "lib/keyword_search.rl"
       
-# line 144 "lib/keyword_search.rb"
+# line 156 "lib/keyword_search.rb"
 begin
 	_klen, _trans, _keys, _acts, _nacts = nil
-	if p != pe
-	if cs != 0
+	_goto_level = 0
+	_resume = 10
+	_eof_trans = 15
+	_again = 20
+	_test_eof = 30
+	_out = 40
 	while true
-	_break_resume = false
-	begin
-	_break_again = false
+	_trigger_goto = false
+	if _goto_level <= 0
+	if p == pe
+		_goto_level = _test_eof
+		next
+	end
+	if cs == 0
+		_goto_level = _out
+		next
+	end
+	end
+	if _goto_level <= _resume
 	_keys = _parser_key_offsets[cs]
 	_trans = _parser_index_offsets[cs]
 	_klen = _parser_single_lengths[cs]
@@ -198,23 +223,23 @@ begin
 	     _trans += _klen
 	  end
 	end while false
-	cs = _parser_trans_targs_wi[_trans]
-	break if _parser_trans_actions_wi[_trans] == 0
-	_acts = _parser_trans_actions_wi[_trans]
-	_nacts = _parser_actions[_acts]
-	_acts += 1
-	while _nacts > 0
-		_nacts -= 1
+	cs = _parser_trans_targs[_trans]
+	if _parser_trans_actions[_trans] != 0
+		_acts = _parser_trans_actions[_trans]
+		_nacts = _parser_actions[_acts]
 		_acts += 1
-		case _parser_actions[_acts - 1]
-when 0:
+		while _nacts > 0
+			_nacts -= 1
+			_acts += 1
+			case _parser_actions[_acts - 1]
+when 0 then
 # line 13 "lib/keyword_search.rl"
 		begin
 
         tokstart = p;
       		end
 # line 13 "lib/keyword_search.rl"
-when 1:
+when 1 then
 # line 17 "lib/keyword_search.rl"
 		begin
 
@@ -222,14 +247,14 @@ when 1:
         results[key] ||= []
       		end
 # line 17 "lib/keyword_search.rl"
-when 2:
+when 2 then
 # line 22 "lib/keyword_search.rl"
 		begin
 
         key = nil
       		end
 # line 22 "lib/keyword_search.rl"
-when 3:
+when 3 then
 # line 26 "lib/keyword_search.rl"
 		begin
 
@@ -242,36 +267,67 @@ when 3:
         (results[key || :default] ||= []) << value
       		end
 # line 26 "lib/keyword_search.rl"
-when 4:
+when 4 then
 # line 36 "lib/keyword_search.rl"
 		begin
  quotes += 1 		end
 # line 36 "lib/keyword_search.rl"
-when 5:
+when 5 then
 # line 38 "lib/keyword_search.rl"
 		begin
  quotes -= 1 		end
 # line 38 "lib/keyword_search.rl"
-when 6:
+when 6 then
 # line 52 "lib/keyword_search.rl"
 		begin
  raise ParseError, "At offset #{p}, near: '#{data[p,10]}'" 		end
 # line 52 "lib/keyword_search.rl"
-# line 261 "lib/keyword_search.rb"
-		end # action switch
+# line 286 "lib/keyword_search.rb"
+			end # action switch
+		end
 	end
-	end while false
-	break if _break_resume
-	break if cs == 0
+	if _trigger_goto
+		next
+	end
+	end
+	if _goto_level <= _again
+	if cs == 0
+		_goto_level = _out
+		next
+	end
 	p += 1
-	break if p == pe
+	if p != pe
+		_goto_level = _resume
+		next
+	end
+	end
+	if _goto_level <= _test_eof
+	if p == eof
+	__acts = _parser_eof_actions[cs]
+	__nacts =  _parser_actions[__acts]
+	__acts += 1
+	while __nacts > 0
+		__nacts -= 1
+		__acts += 1
+		case _parser_actions[__acts - 1]
+when 6 then
+# line 52 "lib/keyword_search.rl"
+		begin
+ raise ParseError, "At offset #{p}, near: '#{data[p,10]}'" 		end
+# line 52 "lib/keyword_search.rl"
+# line 319 "lib/keyword_search.rb"
+		end # eof action switch
+	end
+	if _trigger_goto
+		next
+	end
+end
+	end
+	if _goto_level <= _out
+		break
 	end
 	end
 	end
-	end
-# line 80 "lib/keyword_search.rl"
-    	
-# line 275 "lib/keyword_search.rb"
 # line 81 "lib/keyword_search.rl"
     	unless quotes.zero?
     	  raise ParseError, "Unclosed quotes"

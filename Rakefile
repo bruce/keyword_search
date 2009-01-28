@@ -14,7 +14,7 @@ Echoe.new 'keyword_search' do |p|
 end
 
 rule '.rb' => '.rl' do |t|
-  sh "ragel -R #{t.source} | rlgen-ruby -o #{t.name}"
+  sh "ragel -R #{t.source}"
 end
 
 task :ragel => 'lib/keyword_search.rb'
