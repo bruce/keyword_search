@@ -70,6 +70,7 @@ module KeywordSearch
       data = input + ' '
       %% write data;
     	p = 0
+      eof = nil
     	pe = data.length
     	key = nil
     	tokstart = nil
@@ -77,7 +78,6 @@ module KeywordSearch
     	quotes = 0
       %% write init;
       %% write exec;
-    	%% write eof;
     	unless quotes.zero?
     	  raise ParseError, "Unclosed quotes"
     	end
