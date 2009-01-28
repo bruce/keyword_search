@@ -28,7 +28,15 @@ module KeywordSearch
       }
       
       action value {
-        (results[key || :default] ||= []) << word
+        (results[key || :default] ||= []) << [ word, positive_match ]
+      }
+      
+      action negative_match {
+        positive_match = false
+      }
+      
+      action positive_match {
+        positive_match = true
       }
       
       action quote { quotes += 1 }
@@ -52,8 +60,10 @@ module KeywordSearch
       pair = bareword % key ':' value ;
 
       value_only = value > default ;
+      
+      match_mode = ('-' % negative_match | '+'? % positive_match ) ;
 
-      definition = ( pair | value_only );
+      definition = match_mode? <: ( pair | value_only ) ;
       
       definitions = definition ( ' '+ definition )*;
 
@@ -83,6 +93,7 @@ module KeywordSearch
       word = nil
     	pe = data.length
     	key = nil
+      positive_match = nil
     	tokstart = nil
     	results = {}
     	quotes = 0

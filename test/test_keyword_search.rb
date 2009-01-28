@@ -266,6 +266,50 @@ context "KeywordSearch" do
     end
     assert_nil result
   end
+  
+  specify 'a negative search' do
+    result = nil
+
+    KeywordSearch.search(%<-site:google.com>) do |with|
+      with.keyword :site do |values, positive|
+        result = [ values, positive ]
+      end
+    end
+    assert_equal [ [ 'google.com' ], false ], result
+  end
+
+  specify 'a positive search' do
+    result = nil
+
+    KeywordSearch.search(%<+site:google.com>) do |with|
+      with.keyword :site do |values, positive|
+        result = [ values, positive ]
+      end
+    end
+    assert_equal [ [ 'google.com' ], true ], result
+  end
+
+  specify 'a search with no sign' do
+    result = nil
+
+    KeywordSearch.search(%<site:google.com>) do |with|
+      with.keyword :site do |values, positive|
+        result = [ values, positive ]
+      end
+    end
+    assert_equal [ [ 'google.com' ], true ], result
+  end
+
+  specify 'a term should default to positive with no sign' do
+    result = nil
+
+    KeywordSearch.search(%<-site:google.com inurl:atom>) do |with|
+      with.keyword :inurl do |values, positive|
+        result = [ values, positive ]
+      end
+    end
+    assert_equal [ [ 'atom' ], true ], result
+  end
 end
 
 

@@ -4,7 +4,7 @@ require 'rubygems'
 require 'echoe'
 
 Echoe.new 'keyword_search' do |p|
-  p.version = '1.3.1'
+  p.version = '1.4'
   p.author = "Bruce Williams"
   p.email  = 'bruce@codefluency.com'
   p.project = 'codefluency'
