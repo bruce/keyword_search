@@ -33,11 +33,11 @@ module KeywordSearch
       @default_keyword = name
     end
       
-    def handle(key, values)
+    def handle(key, values, sign = nil)
       key = @default_keyword if key == :default
       return false unless key
       if k = keywords.detect { |kw| kw.name == key.to_sym}
-        k.handle(values) 
+        k.handle(values)
       end
     end
     
