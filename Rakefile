@@ -20,5 +20,3 @@ rule '.rb' => '.rl' do |t|
 end
 
 task :ragel => 'lib/keyword_search.rb'
-
-
