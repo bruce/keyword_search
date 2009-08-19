@@ -253,7 +253,7 @@ context "KeywordSearch" do
         result = values
       end
     end
-    assert_equal [], result.select { |v| v.match(/ /) }
+    assert_equal %w(this is some text), result
   end
 
   specify "an empty search is successful" do
@@ -308,6 +308,30 @@ context "KeywordSearch" do
         result = [ values, positive ]
       end
     end
-    assert_equal [ [ 'atom' ], true ], result
+    assert_equal [ %w(atom), true ], result
+  end
+
+  specify 'a negative and positive search to the default keyword' do
+    result = []
+
+    KeywordSearch.search(%<text -google.com search>) do |with|
+      with.default_keyword :text
+      with.keyword :text do |values, positive|
+        result << [ values, positive ]
+      end
+    end
+    assert_equal [ [ %w(text search), true ], [ %w(google.com), false ] ], result
+  end
+
+  specify 'a negative search to the default keyword with quotes' do
+    result = []
+
+    KeywordSearch.search(%<-google.com>) do |with|
+      with.default_keyword :text
+      with.keyword :text do |values, positive|
+        result << [ values, positive ]
+      end
+    end
+    assert_equal [ [ %w(google.com), false ] ], result
   end
 end

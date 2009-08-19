@@ -49,11 +49,9 @@ module KeywordSearch
       false_values.collect! { |v| v[0] }
       
       if k = keywords.detect { |kw| kw.name == key.to_sym}
-        k.handle(true_values, true)
-        k.handle(false_values, false) if false_values.length > 0
+        k.handle(true_values, true)   unless true_values.empty?
+        k.handle(false_values, false) unless false_values.empty?
       end
     end
-    
   end
-  
 end
