@@ -1,5 +1,7 @@
 # -*- ruby -*-
 
+require 'rake/testtask'
+
 begin
   require 'rubygems'
   require 'jeweler'
@@ -20,3 +22,13 @@ rule '.rb' => '.rl' do |t|
 end
 
 task :ragel => 'lib/keyword_search.rb'
+
+
+task :default => [:ragel, :tests]
+
+desc "Run basic tests"
+Rake::TestTask.new("tests") { |t|
+  t.pattern = 'test/test_*.rb'
+  t.verbose = true
+  t.warning = true
+}
