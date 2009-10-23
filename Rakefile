@@ -13,6 +13,7 @@ begin
     gemspec.authors           = [ "Bruce Williams", "Eric Lindvall" ]
     gemspec.rubyforge_project = 'codefluency'
   end
+  Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end

@@ -81,13 +81,18 @@ use to build a real SQL query.
 
 ## Installation
 
-Stable releases from RubyForge:
+keyword_search is only released on gemcutter. To install, you can setup gemcutter as your default gem source.
 
-    sudo gem install keyword_search
+    $ gem install gemcutter
+    $ gem tumble
+ 
+Then you can install it:
+ 
+    $ gem install keyword_search
 
-Development releases from GitHub:
+You can also just get it in one line:
 
-    sudo gem install bruce-keyword_search --source 'http://gems.github.com'  
+    $ gem install keyword_search -s http://gemcutter.org
 
 
 ## License
