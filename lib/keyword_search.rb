@@ -1146,9 +1146,9 @@ begin
 	        break if _upper < _lower
 	        _mid = _lower + ( (_upper - _lower) >> 1 )
 
-	        if data[p] < _parser_trans_keys[_mid]
+	        if data[p].ord < _parser_trans_keys[_mid].ord
 	           _upper = _mid - 1
-	        elsif data[p] > _parser_trans_keys[_mid]
+	        elsif data[p].ord > _parser_trans_keys[_mid].ord
 	           _lower = _mid + 1
 	        else
 	           _trans += (_mid - _keys)
@@ -1167,9 +1167,9 @@ begin
 	     loop do
 	        break if _upper < _lower
 	        _mid = _lower + (((_upper-_lower) >> 1) & ~1)
-	        if data[p] < _parser_trans_keys[_mid]
+	        if data[p].ord < _parser_trans_keys[_mid].ord
 	          _upper = _mid - 2
-	        elsif data[p] > _parser_trans_keys[_mid+1]
+	        elsif data[p].ord > _parser_trans_keys[_mid+1].ord
 	          _lower = _mid + 2
 	        else
 	          _trans += ((_mid - _keys) >> 1)
