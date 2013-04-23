@@ -1,16 +1,8 @@
 rvm:
-  - 1.9.2
   - 1.9.3
-  - ruby-head
-  - jruby-head
+  - 2.0.0
 
-# Bundler is acting up on ruby-head; since we don't currently have any
-# dependencies, stub out the install.
-#
-# bundler_args: --without docs
-install:
-  - echo "No dependencies."
-  - date
+bundler_args: --without docs
 
 notifications:
   email:
