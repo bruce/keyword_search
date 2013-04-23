@@ -4,7 +4,13 @@ rvm:
   - ruby-head
   - jruby-head
 
-bundler_args: --without docs
+# Bundler is acting up on ruby-head; since we don't currently have any
+# dependencies, stub out the install.
+#
+# bundler_args: --without docs
+install:
+  - echo "No dependencies."
+  - date
 
 notifications:
   email:
