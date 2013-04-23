@@ -1,11 +1,9 @@
-require 'test/unit'
-
-require 'rubygems' rescue nil
-require 'test/spec'
+require 'minitest/spec'
+require 'minitest/autorun'
 
 require File.dirname(__FILE__) + '/../lib/keyword_search'
 
-context "KeywordSearch" do
+describe "KeywordSearch" do
 
   NAME_AND_AGE = %<bruce williams age:26>
   NAME_QUOTED_AND_AGE = %<"bruce williams" age:26>
@@ -18,7 +16,7 @@ context "KeywordSearch" do
   NAME_AND_GROUPED_QUOTED_AGES = %<coda hale age:("27" 34 '48')>
   GROUPED_NAMES_AND_AGE = %<(coda bruce 'hale' "williams") age:20>
 
-  specify "default keyword" do
+  it "default keyword" do
     result = nil
     KeywordSearch.search(NAME_AND_AGE) do |with|
       with.default_keyword :name
@@ -26,10 +24,11 @@ context "KeywordSearch" do
         result = values.join(' ')
       end
     end
+    result.must_equal 'bruce williams'
     assert_equal 'bruce williams', result
   end
 
-  specify "grouped default keywords" do
+  it "grouped default keywords" do
     result = nil
     KeywordSearch.search(GROUPED_NAMES_AND_AGE) do |with|
       with.default_keyword :name
@@ -40,7 +39,7 @@ context "KeywordSearch" do
     assert_equal ['coda', 'bruce', 'hale', 'williams'], result
   end
 
-  specify "unquoted keyword term" do
+  it "unquoted keyword term" do
     result = nil
     KeywordSearch.search(NAME_AND_AGE) do |with|
       with.keyword :age do |values|
@@ -50,7 +49,7 @@ context "KeywordSearch" do
     assert_equal 26, result
   end
 
-  specify "unquoted grouped keyword term" do
+  it "unquoted grouped keyword term" do
     result = nil
     KeywordSearch.search(NAME_AND_GROUPED_AGE) do |with|
       with.keyword :age do |values|
@@ -60,7 +59,7 @@ context "KeywordSearch" do
     assert_equal 27, result
   end
 
-  specify "quoted grouped keyword term" do
+  it "quoted grouped keyword term" do
     result = nil
     KeywordSearch.search(NAME_AND_GROUPED_QUOTED_AGE) do |with|
       with.keyword :age do |values|
@@ -70,7 +69,7 @@ context "KeywordSearch" do
     assert_equal 27, result
   end
 
-  specify "mixed grouped keyword terms" do
+  it "mixed grouped keyword terms" do
     result = nil
     KeywordSearch.search(NAME_AND_GROUPED_QUOTED_AGES) do |with|
       with.keyword :age do |values|
@@ -80,7 +79,7 @@ context "KeywordSearch" do
     assert_equal [27, 34, 48], result
   end
 
-  specify "quoted default keyword term" do
+  it "quoted default keyword term" do
     result = nil
     KeywordSearch.search(NAME_QUOTED_AND_AGE) do |with|
       with.default_keyword :name
@@ -91,7 +90,7 @@ context "KeywordSearch" do
     assert_equal 'bruce williams', result
   end
 
-  specify "quoted keyword term" do
+  it "quoted keyword term" do
     result = nil
     KeywordSearch.search(NAME_AND_QUOTED_AGE) do |with|
       with.keyword :age do |values|
@@ -101,7 +100,7 @@ context "KeywordSearch" do
     assert_equal 26, result
   end
 
-  specify "quoted keyword term with whitespace" do
+  it "quoted keyword term with whitespace" do
     result = nil
     KeywordSearch.search(DEFAULT_AGE_WITH_QUOTED_AGE) do |with|
       with.default_keyword :age
@@ -112,7 +111,7 @@ context "KeywordSearch" do
     assert_equal 'bruce williams', result
   end
 
-  specify "single quoted keyword term with whitespace" do
+  it "single quoted keyword term with whitespace" do
     result = nil
     r = KeywordSearch.search(DEFAULT_AGE_WITH_SINGLE_QUOTED_AGE) do |with|
       with.default_keyword :age
@@ -123,7 +122,7 @@ context "KeywordSearch" do
     assert_equal 'bruce williams', result
   end
 
-  specify "nested single quote is accumulated" do
+  it "nested single quote is accumulated" do
     result = nil
     KeywordSearch.search(NAME_WITH_NESTED_SINGLE_QUOTES) do |with|
       with.default_keyword :name
@@ -134,7 +133,7 @@ context "KeywordSearch" do
     assert_equal %<d'arcy d'uberville>, result
   end
 
-  specify "nested double quote is accumulated" do
+  it "nested double quote is accumulated" do
     result = nil
     KeywordSearch.search(%<'he was called "jake"'>) do |with|
       with.default_keyword :text
@@ -145,7 +144,7 @@ context "KeywordSearch" do
     assert_equal %<he was called "jake">, result
   end
 
-  specify "bare single quote in unquoted literal is accumulated" do
+  it "bare single quote in unquoted literal is accumulated" do
     result = nil
     KeywordSearch.search(%<bruce's age:27>) do |with|
       with.default_keyword :text
@@ -156,7 +155,7 @@ context "KeywordSearch" do
     assert_equal %<bruce's>, result
   end
 
-  specify "single quoted literal is accumulated" do
+  it "single quoted literal is accumulated" do
     result = nil
     KeywordSearch.search(%<foo 'bruce williams' age:27>) do |with|
       with.default_keyword :text
@@ -167,7 +166,7 @@ context "KeywordSearch" do
     assert_equal %<bruce williams>, result
   end
 
-  specify "period in literal is accumulated" do
+  it "period in literal is accumulated" do
     result = nil
     KeywordSearch.search(%<okay... age:27>) do |with|
       with.default_keyword :text
@@ -178,7 +177,7 @@ context "KeywordSearch" do
     assert_equal %<okay...>, result
   end
 
-  specify "parse error results in exception" do
+  it "parse error results in exception" do
     assert_raises(KeywordSearch::ParseError) do
       KeywordSearch.search(%<we_do_not_allow:! or ::>) do |with|
         with.default_keyword :text
@@ -189,7 +188,7 @@ context "KeywordSearch" do
     end
   end
 
-  specify "can use apostrophes in unquoted literal" do
+  it "can use apostrophes in unquoted literal" do
     result = nil
     KeywordSearch.search(%<d'correct>) do |with|
       with.default_keyword :text
@@ -200,7 +199,7 @@ context "KeywordSearch" do
     assert_equal "d'correct", result
   end
 
-  specify "can use apostrophes in unquoted literal values" do
+  it "can use apostrophes in unquoted literal values" do
     result = nil
     KeywordSearch.search(%<text:d'correct>) do |with|
       with.default_keyword :text
@@ -211,7 +210,7 @@ context "KeywordSearch" do
     assert_equal "d'correct", result
   end
 
-  specify "cannot use an apostrophe at the beginning on an unquoted literal" do
+  it "cannot use an apostrophe at the beginning on an unquoted literal" do
     assert_raises(KeywordSearch::ParseError) do
       KeywordSearch.search(%<'thisiswrong>) do |with|
         with.default_keyword :text
@@ -222,7 +221,7 @@ context "KeywordSearch" do
     end
   end
 
-  specify "keywords are case sensitive" do
+  it "keywords are case sensitive" do
     result = nil
     KeywordSearch.search(%<Text:justtesting>) do |with|
       with.keyword :text do |values|
@@ -235,7 +234,7 @@ context "KeywordSearch" do
     assert_equal :big, result
   end
 
-  specify "values are case sensitive" do
+  it "values are case sensitive" do
     result = nil
     KeywordSearch.search(%<text:Big>) do |with|
       with.keyword :text do |values|
@@ -245,7 +244,7 @@ context "KeywordSearch" do
     assert_equal 'Big', result
   end
 
-  specify "spaces are condensed" do
+  it "spaces are condensed" do
     result = nil
     KeywordSearch.search(%<   this   is    some    text   >) do |with|
       with.default_keyword :text
@@ -256,7 +255,7 @@ context "KeywordSearch" do
     assert_equal %w(this is some text), result
   end
 
-  specify "an empty search is successful" do
+  it "an empty search is successful" do
     result = nil
     KeywordSearch.search(%<>) do |with|
       with.default_keyword :text
@@ -267,7 +266,7 @@ context "KeywordSearch" do
     assert_nil result
   end
 
-  specify 'a negative search' do
+  it 'a negative search' do
     result = nil
 
     KeywordSearch.search(%<-site:google.com>) do |with|
@@ -278,7 +277,7 @@ context "KeywordSearch" do
     assert_equal [ [ 'google.com' ], false ], result
   end
 
-  specify 'a positive search' do
+  it 'a positive search' do
     result = nil
 
     KeywordSearch.search(%<+site:google.com>) do |with|
@@ -289,7 +288,7 @@ context "KeywordSearch" do
     assert_equal [ [ 'google.com' ], true ], result
   end
 
-  specify 'a search with no sign' do
+  it 'a search with no sign' do
     result = nil
 
     KeywordSearch.search(%<site:google.com>) do |with|
@@ -300,7 +299,7 @@ context "KeywordSearch" do
     assert_equal [ [ 'google.com' ], true ], result
   end
 
-  specify 'a term should default to positive with no sign' do
+  it 'a term should default to positive with no sign' do
     result = nil
 
     KeywordSearch.search(%<-site:google.com inurl:atom>) do |with|
@@ -311,7 +310,7 @@ context "KeywordSearch" do
     assert_equal [ %w(atom), true ], result
   end
 
-  specify 'a negative and positive search to the default keyword' do
+  it 'a negative and positive search to the default keyword' do
     result = []
 
     KeywordSearch.search(%<text -google.com search>) do |with|
@@ -323,7 +322,7 @@ context "KeywordSearch" do
     assert_equal [ [ %w(text search), true ], [ %w(google.com), false ] ], result
   end
 
-  specify 'a negative search to the default keyword with quotes' do
+  it 'a negative search to the default keyword with quotes' do
     result = []
 
     KeywordSearch.search(%<-google.com>) do |with|
