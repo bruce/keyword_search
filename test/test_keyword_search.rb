@@ -333,4 +333,28 @@ describe "KeywordSearch" do
     end
     assert_equal [ [ %w(google.com), false ] ], result
   end
+
+  it 'a search falling back to default values' do
+    result = []
+
+    KeywordSearch.search(%<>) do |with|
+      with.keyword :some_flag, nil, "false" do |values, positive|
+        result << [ values, positive ]
+      end
+    end
+
+    assert_equal [ [ %w(false), true ] ], result
+  end
+
+  it 'a search should not use default values when explicit values present' do
+    result = []
+
+    KeywordSearch.search(%<some_flag:true>) do |with|
+      with.keyword :some_flag, nil, "false" do |values, positive|
+        result << [ values, positive ]
+      end
+    end
+
+    assert_equal [ [ %w(true), true ] ], result
+  end
 end

@@ -4,9 +4,9 @@ module KeywordSearch
 
     class Keyword
 
-      attr_reader :name, :description, :handler
-      def initialize(name, description=nil, &handler)
-        @name, @description = name, description
+      attr_reader :name, :description, :default_values, :handler
+      def initialize(name, description=nil, default_values=nil, &handler)
+        @name, @description, @default_values = name, description, default_values
         @handler = handler
       end
 
@@ -31,8 +31,8 @@ module KeywordSearch
       @keywords ||= []
     end
 
-    def keyword(name, description=nil, &block)
-      keywords << Keyword.new(name, description, &block)
+    def keyword(name, description=nil, default_values=nil, &block)
+      keywords << Keyword.new(name, description, default_values, &block)
     end
 
     def default_keyword(name)

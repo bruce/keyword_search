@@ -81,6 +81,21 @@ KeywordSearch.search(terms) do |with|
     arguments << "%#{values.join(' ')}%"
   end
 
+  # A keyword description can be passed as the second argument of the
+  # `keyword` call, and read back as an attribute on the keyword
+  with.keyword :title, 'Some description of the title search here' do |values|
+    ...
+  end
+
+  # Default values can be passed as the `keyword` call's third argument.
+  # Such default values will be assumed to be part of the search string
+  # if its keyword is not already present in that string.  Defaults are
+  # always positive.
+  with.keyword :title, nil, "Dr." do |values|
+    # A search on 'title:Mr.' will yield a `values` of `['Mr.']`
+    # A search on 'has:something' will yield a `values` of `['Dr.']`
+  end
+
 end
 ```
 
