@@ -15,6 +15,7 @@ module KeywordSearch
     def search(input_string, definition=nil, &block)
       definition ||= Definition.new(&block)
       results = parse(input_string)
+      add_default_values(results, definition)
       results.each do |key, terms|
         definition.handle(key, terms)
       end
@@ -24,6 +25,13 @@ module KeywordSearch
     #######
     private
     #######
+    
+    def add_default_values(results, definition)
+      definition.keywords.each do |keyword|
+      	next if keyword.default_values.nil?
+      	results[keyword.name.to_s] ||= parse(keyword.default_values)[:default]
+      end
+    end
     
     def parse(input) #:nodoc:
       data = input + ' '
@@ -2285,5 +2293,4 @@ end
   end
   
 end
-
 
